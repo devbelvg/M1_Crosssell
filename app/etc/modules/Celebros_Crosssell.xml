@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish correct extension functionality.
+ * If you wish to customize it, please contact Celebros.
+ *
+ * @category    Celebros
+ * @package     Celebros_Crosssell
+-->
+<config>
+    <modules>
+        <Celebros_Crosssell>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Celebros_Crosssell>
+    </modules>
+</config>
