@@ -29,9 +29,7 @@ class Celebros_Crosssell_Block_TargetRule_Catalog_Product_List_Upsell extends En
             return parent::getItemCollection();
         }
         
-        $items = $this->_items;
-        if (is_null($items)) {
-            reset($this->_itemCollection);
+        if (empty($this->_itemCollection)) {
             $productSku = null;
             if ($this->getProduct() != null) {
                 $productSku = $this->getProduct()->getSku();

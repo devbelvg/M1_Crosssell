@@ -30,7 +30,7 @@ class Celebros_Crosssell_Block_TargetRule_Checkout_Cart_Crosssell extends Enterp
 			return parent::getItemCollection();
 		}
 		
-        if (is_null($items)) {
+        if (is_null($this->_items)) {
             $cartProductIds = $this->_getCartProductIds();
             $lastAdded = null;
             for ($i = count($cartProductIds)-1; $i >=0 ; $i--) {
@@ -45,7 +45,7 @@ class Celebros_Crosssell_Block_TargetRule_Checkout_Cart_Crosssell extends Enterp
             $productSku = Mage::getModel('catalog/product')->load($lastAdded)->getSku();
             $crossSellSkus = Mage::helper('celebros_crosssell')->getSalespersonCrossSellApi()->getRecommendationsIds($productSku);
             $this->_maxItemCount = Mage::getStoreConfig('celebros_crosssell/crosssell_settings/crosssell_limit');
-            $items = $this->_getCollection()
+            $this->_items = $this->_getCollection()
                 ->addFieldToFilter('sku', array('in' => $crossSellSkus));
         }
 
