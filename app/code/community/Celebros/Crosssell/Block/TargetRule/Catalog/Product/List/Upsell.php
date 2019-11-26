@@ -34,11 +34,16 @@ class Celebros_Crosssell_Block_TargetRule_Catalog_Product_List_Upsell extends En
             if ($this->getProduct() != null) {
                 $productSku = $this->getProduct()->getSku();
                 $upSellSkus = Mage::helper('celebros_crosssell')->getSalespersonCrossSellApi()->getRecommendationsIds($productSku);
-                $this->_maxItemCount = Mage::getStoreConfig('celebros_crosssell/crosssell_settings/upsell_limit');
-                $this->_itemCollection = $this->_getCollection()->addFieldToFilter('sku', array('in' => $upSellSkus));
+                if (!empty($upSellSkus)) {
+                    $this->_maxItemCount = Mage::getStoreConfig('celebros_crosssell/crosssell_settings/upsell_limit');
+                    $this->_itemCollection = $this->_getCollection()->addFieldToFilter('sku', array('in' => $upSellSkus));
+                    $this->_itemCollection->getSelect()->order("FIELD('sku', '" . implode("','", $upSellSkus) . "') ASC");
+                } else {
+                    $this->_itemCollection = new Varien_Data_Collection();
+                }
             }
         }
-        
+       
         return $this->_itemCollection;
     }
 	

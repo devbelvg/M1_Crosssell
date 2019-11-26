@@ -13,8 +13,8 @@
 <config>
     <modules>
         <Celebros_Crosssell>
-            <version>0.9.2</version>
-            <build>102</build>
+            <version>0.9.3</version>
+            <build>103</build>
         </Celebros_Crosssell>
     </modules>
     <frontend>

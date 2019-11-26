@@ -33,7 +33,7 @@ class Celebros_Crosssell_Block_TargetRule_Checkout_Cart_Crosssell extends Enterp
         if (is_null($this->_items)) {
             $cartProductIds = $this->_getCartProductIds();
             $lastAdded = null;
-            for ($i = count($cartProductIds)-1; $i >=0 ; $i--) {
+            for ($i = count($cartProductIds) - 1; $i >=0 ; $i--) {
                 $id =  $cartProductIds[$i];
                 $parentIds = Mage::getModel('catalog/product_type_configurable')->getParentIdsByChild($id);
                 if (empty($parentIds)) {
@@ -44,9 +44,15 @@ class Celebros_Crosssell_Block_TargetRule_Checkout_Cart_Crosssell extends Enterp
                 
             $productSku = Mage::getModel('catalog/product')->load($lastAdded)->getSku();
             $crossSellSkus = Mage::helper('celebros_crosssell')->getSalespersonCrossSellApi()->getRecommendationsIds($productSku);
-            $this->_maxItemCount = Mage::getStoreConfig('celebros_crosssell/crosssell_settings/crosssell_limit');
-            $this->_items = $this->_getCollection()
-                ->addFieldToFilter('sku', array('in' => $crossSellSkus));
+            if (!empty($crossSellSkus)) {
+                $this->_maxItemCount = Mage::getStoreConfig('celebros_crosssell/crosssell_settings/crosssell_limit');
+                $collection = $this->_getCollection()->addFieldToFilter('sku', array('in' => $crossSellSkus));
+                $collection->getSelect()->order("FIELD('sku', '" . implode("','", $crossSellSkus) . "') ASC");
+            } else {
+                $collection = new Varien_Data_Collection();
+            }
+            
+            $this->_items = $collection;
         }
 
 		return $this->_items;

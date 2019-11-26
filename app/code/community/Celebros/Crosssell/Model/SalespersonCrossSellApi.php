@@ -50,13 +50,15 @@ class Celebros_Crosssell_Model_SalespersonCrossSellApi extends Mage_Core_Model_A
             }
             return $arrIds;
         }
-        
+       
         $url = "https://{$this->_serverAddress}/JsonEndPoint/ProductsRecommendation.aspx?siteKey={$this->_siteKey}&RequestHandle={$this->_requestHandle}&RequestType=1&SKU={$id}&Encoding=utf-8";
         $jsonData =  $this->_get_data($url);
         $obj = json_decode($jsonData);
         for ($i=0; isset($obj->Items) && $i < count($obj->Items); $i++) {
-            $arrIds[] = $obj->Items[$i]->Fields->SKU;
+            $arrIds[(int)$obj->Items[$i]->Fields->Rank] = $obj->Items[$i]->Fields->SKU;
         }
+        
+        ksort($arrIds);        
         
         return $arrIds; 
     }
